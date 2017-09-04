@@ -1,12 +1,7 @@
 ### https://github.com/Darkade/slacktunes-mopidy
-
 FROM alpine:latest
 
 RUN adduser -S mopidy
-
-COPY mopidy.conf /home/mopidy/.config/mopidy/mopidy.conf
-
-COPY entrypoint.sh /entrypoint.sh
 
 RUN apk update \
     && apk upgrade \
@@ -16,20 +11,29 @@ RUN apk update \
             --repository  http://dl-cdn.alpinelinux.org/alpine/edge/community \
             --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
             gstreamer \
-            mopidy=2.1.0-r1 \
-            py-pip=9.0.1-r1 \
+            mopidy \
+            py-pip \
             python-dev alpine-sdk \
 
     && if [[ ! -e /usr/bin/easy_install ]];  then ln -sf /usr/bin/easy_install-3.4 /usr/bin/easy_install; fi \
     && pip install --upgrade pip \
     && if [[ ! -e /usr/bin/pip ]]; then ln -sf /usr/bin/pip3.4 /usr/bin/pip; fi \
     && pip install -U six \
-    && pip install  Mopidy-GMusic Mopidy-Youtube youtube-dl pyasn1
+    && pip install  Mopidy-GMusic pyasn1==0.1.8 \
 
-RUN chown mopidy:audio -R /etc/mopidy \
-    && chown mopidy:audio /entrypoint.sh
+    && pip install -U Mopidy-YouTube \
+    && pip install -U Mopidy-Mopify \
+    && pip install -U mopidy-musicbox-webclient \
+    && pip install -U Mopidy-Iris \
+    && pip install -U Mopidy-Moped
 
-# Run as mopidy user
+COPY mopidy.conf  /tmp/
+
+RUN chown mopidy:audio -R /etc/mopidy
+
 USER mopidy
 
-CMD ["/usr/bin/mopidy"]
+EXPOSE 6600
+EXPOSE 6680
+
+CMD /usr/bin/mopidy --config /tmp/mopidy.conf
