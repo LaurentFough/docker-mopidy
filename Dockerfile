@@ -25,7 +25,8 @@ RUN apk update \
     && pip install -U Mopidy-Mopify \
     && pip install -U mopidy-musicbox-webclient \
     && pip install -U Mopidy-Iris \
-    && pip install -U Mopidy-Moped
+    && pip install -U Mopidy-Moped \
+    && apk del python-dev alpine-sdk py-pip
 
 COPY mopidy.conf  /tmp/
 
