@@ -1,40 +1,52 @@
-### https://github.com/Darkade/slacktunes-mopidy
 FROM alpine:latest
 
-RUN adduser -S mopidy
+ENV LANG C.UTF-8
+ENV PYTHONIOENCODING UTF-8
 
-RUN apk update \
-    && apk upgrade \
+RUN set -ex \
+ && addgroup -S -g 1000 mopidy \
+ && adduser -S -D -h /var/lib/mopidy -s /sbin/nologin -G mopidy -g mopidy -u 1000 mopidy \
+ && echo "@main http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
+ && echo "@community http://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
+ && echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+ && apk upgrade --no-cache --available \
+ && apk add --no-cache \
+        gst-libav@main \
+        gst-plugins-good@main \
+        gst-plugins-ugly@main \
+        py-gst@community \
+        py-pip \
+        tzdata \
+        python \
+        python-dev \
+        alpine-sdk \
+        libffi-dev \
+ && pip install -U pip \
+ && pip install \
+        Mopidy-Internetarchive \
+        Mopidy-MusicBox-Webclient \
+        Mopidy-Podcast \
+        Mopidy-Scrobbler \
+        Mopidy-TuneIn \
+        Mopidy-YouTube \
+        Mopidy-SoundCloud \
+        Mopidy-Emby \
+        Mopidy-Mopify \
+        Mopidy-Iris \
+        Mopidy-Moped \
+        spotipy \
+#        Mopidy-Spotify \
+        mopidy
 
-    && apk add --no-cache \
-            --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
-            --repository  http://dl-cdn.alpinelinux.org/alpine/edge/community \
-            --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-            gstreamer \
-            mopidy \
-            py-pip \
-            python-dev alpine-sdk \
+RUN apk update --no-cache && apk del alpine-sdk
 
-    && if [[ ! -e /usr/bin/easy_install ]];  then ln -sf /usr/bin/easy_install-3.4 /usr/bin/easy_install; fi \
-    && pip install --upgrade pip \
-    && if [[ ! -e /usr/bin/pip ]]; then ln -sf /usr/bin/pip3.4 /usr/bin/pip; fi \
-    && pip install -U six \
-    && pip install  Mopidy-GMusic pyasn1==0.1.8 \
+COPY mopidy.conf /var/lib/mopidy/local/
 
-    && pip install -U Mopidy-YouTube \
-    && pip install -U Mopidy-Mopify \
-    && pip install -U mopidy-musicbox-webclient \
-    && pip install -U Mopidy-Iris \
-    && pip install -U Mopidy-Moped \
-    && apk del python-dev alpine-sdk py-pip
+VOLUME /var/lib/mopidy/local
+VOLUME /var/lib/mopidy/media
 
-COPY mopidy.conf  /tmp/
-
-RUN chown mopidy:audio -R /etc/mopidy
+EXPOSE 6680 6600
 
 USER mopidy
-
-EXPOSE 6600
-EXPOSE 6680
 
 CMD /usr/bin/mopidy --config /tmp/mopidy.conf
