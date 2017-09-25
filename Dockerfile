@@ -5,9 +5,12 @@ ENV PYTHONIOENCODING UTF-8
 
 ENV MOPIDY_VERSION 2.1.0
 
-RUN set -ex \
- && addgroup -S -g 1000 mopidy \
- && adduser -S -D -h /var/lib/mopidy -s /sbin/nologin -G mopidy -g mopidy -u 1000 mopidy \
+ENV UID 1000
+ENV USER htpc
+ENV GROUP htpc
+
+
+RUN addgroup -S ${GROUP} && adduser -D -S -u ${UID} ${USER} ${GROUP} && \
  && echo "@main http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
  && echo "@community http://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
  && echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
