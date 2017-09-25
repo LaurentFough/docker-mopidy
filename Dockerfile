@@ -56,6 +56,6 @@ LABEL name=Mopidy
 LABEL version=${MOPIDY_VERSION}
 LABEL url=https://api.github.com/repos/mopidy/mopidy/releases/latest
 
-USER mopidy
+USER ${USER}
 
 CMD /usr/bin/mopidy --config /tmp/mopidy.conf
