@@ -3,6 +3,8 @@ FROM alpine:latest
 ENV LANG C.UTF-8
 ENV PYTHONIOENCODING UTF-8
 
+ENV MOPIDY_VERSION 2.1.0
+
 RUN set -ex \
  && addgroup -S -g 1000 mopidy \
  && adduser -S -D -h /var/lib/mopidy -s /sbin/nologin -G mopidy -g mopidy -u 1000 mopidy \
@@ -36,7 +38,7 @@ RUN set -ex \
         Mopidy-Moped \
         spotipy \
 #        Mopidy-Spotify \
-        mopidy
+        mopidy==${MOPIDY_VERSION} 
 
 RUN apk update --no-cache && apk del alpine-sdk
 
@@ -46,6 +48,10 @@ VOLUME /var/lib/mopidy/local
 VOLUME /var/lib/mopidy/media
 
 EXPOSE 6680 6600
+
+LABEL name=Mopidy
+LABEL version=${MOPIDY_VERSION}
+LABEL url=https://api.github.com/repos/mopidy/mopidy/releases/latest
 
 USER mopidy
 
