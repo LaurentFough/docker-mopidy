@@ -10,7 +10,7 @@ ENV USER htpc
 ENV GROUP htpc
 
 
-RUN addgroup -S ${GROUP} && adduser -D -S -u ${UID} ${USER} ${GROUP} && \
+RUN addgroup -S ${GROUP} && adduser -D -S -u ${UID} ${USER} ${GROUP} \
  && echo "@main http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
  && echo "@community http://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
  && echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
