@@ -11,11 +11,15 @@ RUN   echo "@main http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/reposi
         gst-plugins-good@main \
         gst-plugins-ugly@main \
         py-gst@community \
-        py-pip \
-        python \
- && pip install \
+        py2-pip \
+        python2 \
+        python2-dev \
+ && pip2 install \
         mopidy && \
         mkdir -p /var/lib/mopidy 
+
+RUN pip2 install  Mopidy-Mopify \
+        Mopidy-TuneIn
 
 COPY mopidy.conf /var/lib/mopidy/
 
