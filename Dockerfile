@@ -48,4 +48,7 @@ EXPOSE 6680 6600
 
 USER ${USER}
 
+LABEL version=${MOPIDY_VERSION}
+LABEL url=https://api.github.com/repos/mopidy/mopidy/releases/latest
+
 CMD /usr/bin/mopidy --config /opt/mopidy/mopidy.conf
