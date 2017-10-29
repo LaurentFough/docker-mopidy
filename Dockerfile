@@ -9,7 +9,7 @@ ENV GROUP htpc
 
 ENV MOPIDY_VERSION 2.1.0
 
-RUN addgroup -S ${GROUP} -g ${GID} && adduser -D -S -u ${UID} ${USER} ${GROUP}  && \
+RUN addgroup -S ${GROUP} -g ${GID} && adduser -D -S -u ${UID} ${USER} -G audio ${GROUP}  && \
     echo "@main http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
  && echo "@community http://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
  && echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
@@ -35,8 +35,8 @@ RUN addgroup -S ${GROUP} -g ${GID} && adduser -D -S -u ${UID} ${USER} ${GROUP}  
         Mopidy-API-Explorer \
         youtube-dl && \
         mkdir -p /opt/mopidy/media &&  \
-        chown -R ${USER}:${GROUP} /opt/mopidy/ &&  \
-        adduser -G audio ${USER}
+        chown -R ${USER}:${GROUP} /opt/mopidy/ 
+        
 
 COPY mopidy.conf /opt/mopidy/
 
