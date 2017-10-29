@@ -36,7 +36,7 @@ RUN addgroup -S ${GROUP} -g ${GID} && adduser -D -S -u ${UID} ${USER} ${GROUP}  
         youtube-dl && \
         mkdir -p /opt/mopidy/media &&  \
         chown -R ${USER}:${GROUP} /opt/mopidy/ &&  \
-        usermod -a -G audio ${USER} 
+        adduser -G audio ${USER}
 
 COPY mopidy.conf /opt/mopidy/
 
