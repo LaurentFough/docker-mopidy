@@ -27,18 +27,16 @@ RUN addgroup -S ${GROUP} -g ${GID} && adduser -D -S -u ${UID} ${USER} ${GROUP}  
         python2 \
         python2-dev \
  && pip2 install \
-        mopidy==${MOPIDY_VERSION} && \
-        mkdir -p /opt/mopidy/media
-
-RUN pip2 install  Mopidy-Iris \
+        mopidy==${MOPIDY_VERSION} \
+        Mopidy-Iris \
         Mopidy-TuneIn \
         Mopidy-YouTube \
         Mopidy-SoundCloud \
         Mopidy-API-Explorer \
         youtube-dl && \
-        chown -R ${USER}:${GROUP} /opt/mopidy/
-
-
+        chown -R ${USER}:${GROUP} /opt/mopidy/ &&  \
+        mkdir -p /opt/mopidy/media &&  \
+        usermod -a -G audio ${USER} \
 
 COPY mopidy.conf /opt/mopidy/
 
