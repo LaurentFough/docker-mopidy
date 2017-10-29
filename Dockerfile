@@ -34,8 +34,8 @@ RUN addgroup -S ${GROUP} -g ${GID} && adduser -D -S -u ${UID} ${USER} ${GROUP}  
         Mopidy-SoundCloud \
         Mopidy-API-Explorer \
         youtube-dl && \
-        chown -R ${USER}:${GROUP} /opt/mopidy/ &&  \
         mkdir -p /opt/mopidy/media &&  \
+        chown -R ${USER}:${GROUP} /opt/mopidy/ &&  \
         usermod -a -G audio ${USER} 
 
 COPY mopidy.conf /opt/mopidy/
