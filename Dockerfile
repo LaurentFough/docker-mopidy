@@ -33,7 +33,7 @@ RUN addgroup -S ${GROUP} -g ${GID} && adduser -D -S -u ${UID} ${USER} -G audio $
         Mopidy-TuneIn \
         Mopidy-YouTube \
         Mopidy-SoundCloud \
-        Mopidy-API-Explorer \
+        Mopidy-Local-SQLite \
         youtube-dl && \
         mkdir -p /opt/mopidy/media &&  \
         chown -R ${USER}:${GROUP} /opt/mopidy/ 
