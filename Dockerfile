@@ -26,6 +26,7 @@ RUN addgroup -S ${GROUP} -g ${GID} && adduser -D -S -u ${UID} ${USER} -G audio $
         py2-pip \
         python2 \
         python2-dev \
+        tzdata \
  && pip2 install \
         mopidy==${MOPIDY_VERSION} \
         Mopidy-Iris \
