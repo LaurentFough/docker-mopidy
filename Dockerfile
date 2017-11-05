@@ -9,6 +9,8 @@ ENV GROUP htpc
 
 ENV MOPIDY_VERSION 2.1.0
 
+COPY mopidy.conf /opt/mopidy/
+
 RUN addgroup -S ${GROUP} -g ${GID} && adduser -D -S -u ${UID} ${USER} -G audio ${GROUP}  && \
     echo "@main http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
  && echo "@community http://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
@@ -38,9 +40,6 @@ RUN addgroup -S ${GROUP} -g ${GID} && adduser -D -S -u ${UID} ${USER} -G audio $
         mkdir -p /opt/mopidy/media &&  \
         chown -R ${USER}:${GROUP} /opt/mopidy/ 
         
-
-COPY mopidy.conf /opt/mopidy/
-
 VOLUME /opt/mopidy/
 
 EXPOSE 6680 6600
